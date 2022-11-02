@@ -12,7 +12,7 @@ from datetime import timedelta
 # c) In case, any error is encountered. Continue from the pageNumber you encountered the error
 #    by adjusting page_number_start variable. (The data is always appended to the csv File
 
-page_number_start = 1
+page_number_start = 380
 csvFile = "dataset/List_of_companies_in_India.csv"
 
 # Note
@@ -101,21 +101,21 @@ for page in range(page_number_start, total_number_of_webpages + 1):
         years_old.append(old)
         employee_strength.append(emp)
 
-        # 8. tags
-        t = []
-        try:
-            for tag in card.find_all("a", class_="ab_chip"):
-                t.append(tag.text.strip())
-            t = ', '.join(t)
-            tags.append(t)
-        except:
-            tags.append(None)
-
-        # 9. about
-        try:
-            about.append(card.find("p", class_="description").text.strip())
-        except:
-            about.append(None)
+        # # 8. tags
+        # t = []
+        # try:
+        #     for tag in card.find_all("a", class_="ab_chip"):
+        #         t.append(tag.text.strip())
+        #     t = ', '.join(t)
+        #     tags.append(t)
+        # except:
+        #     tags.append(None)
+        #
+        # # 9. about
+        # try:
+        #     about.append(card.find("p", class_="description").text.strip())
+        # except:
+        #     about.append(None)
 
     # make a dictionary containing all the data extracted
     col_dic = {
@@ -125,9 +125,7 @@ for page in range(page_number_start, total_number_of_webpages + 1):
         "domain": domain,
         "location": location,
         "years_old": years_old,
-        "employee_strength": employee_strength,
-        "tags": tags,
-        "about": about
+        "employee_strength": employee_strength
     }
 
     # pass the dictionary to pandas to create a dataframe (page)
@@ -144,7 +142,7 @@ for page in range(page_number_start, total_number_of_webpages + 1):
 
     # Export the data to external csv after every loop to ensure no data loss in case of any error
     # continue from the pageNumber you encountered error by adjusting page_number_start
-    dataframe_final.to_csv(csvFile, encoding="utf-8", mode="a", index=False,
+    dataframe_final.to_csv(csvFile, encoding="utf-8", mode="a",
                            header=False)
 
 end_time = time.time()
